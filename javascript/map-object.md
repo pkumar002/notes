@@ -109,6 +109,238 @@ Returns the number of key/value pairs in the Map object.
 4. `Map.prototype.get(key):` Retur the value associated to the **key** or **undefined** if there none.
 5. `Map.prototype.set(key, value):` Sets the value for the key in the Map object. Returns the Map object.
 
+## Iteration methods
+
+1. `Map.prototype[@@iterator]():`<br/>
+   The initial value of the @@iterator property is the same function object as the initial value of the entries method.
+   <br/>
+   **`Example:`**
+
+   ```
+   const map1 = new Map();
+
+   map1.set('0', 'foo');
+   map1.set(1, 'bar');
+
+   const iterator1 = map1[Symbol.iterator]();
+
+   for (const item of iterator1) {
+     console.log(item);
+   }
+   // expected output: Array ["0", "foo"]
+   // expected output: Array [1, "bar"]
+   ```
+
+2. `Map.prototype.keys():`
+   <br/>
+   The keys() method returns a new iterator object that contains the keys for each element in the Map object in insertion order.
+
+   ```
+   const map1 = new Map();
+
+   map1.set('0', 'foo');
+   map1.set(1, 'bar');
+
+   const iterator1 = map1.keys();
+
+   console.log(iterator1.next().value);
+   // expected output: "0"
+
+   console.log(iterator1.next().value);
+   // expected output: 1
+   ```
+
+   **`Output:`**
+
+   ```
+   > "0"
+   > 1
+   ```
+
+3. `Map.prototype.values():`<br/>
+   Returns a new Iterator object that contains the values for each element in the Map object in insertion order
+
+   ```
+     const map1 = new Map();
+
+     map1.set('0', 'foo');
+     map1.set(1, 'bar');
+
+     const iterator1 = map1.values();
+
+     console.log(iterator1.next().value);
+     // expected output: "0"
+
+     console.log(iterator1.next().value);
+     // expected output: 1
+   ```
+
+   **`Output:`**
+
+   ```
+   > "foo"
+   > "bar"
+   ```
+
+4. `Map.prototype.entries():`<br/>
+   Returns a new Iterator object that contains an array of [key, value] for each element in the Map object in insertion order.
+
+   ```
+   const map1 = new Map();
+
+   map1.set('0', 'foo');
+   map1.set(1, 'bar');
+
+   const iterator1 = map1.entries();
+
+   console.log(iterator1.next().value);
+   // expected output: ["0", "foo"]
+
+   console.log(iterator1.next().value);
+   // expected output: [1, "bar"]
+   ```
+
+   **`Output:`**
+
+   ```
+   > Array ["0", "foo"]
+   > Array [1, "bar"]
+   ```
+
+5. `Map.prototype.forEach():`<br/>
+   The forEach() method executes a provided function once per each key/value pair in the Map object, in insertion order.
+
+   ```
+   function logMapElements(value, key, map) {
+     console.log(`m[${key}] = ${value}`);
+   }
+
+   new Map([['foo', 3], ['bar', {}], ['baz', undefined]])
+     .forEach(logMapElements);
+
+   // expected output: "m[foo] = 3"
+   // expected output: "m[bar] = [object Object]"
+   // expected output: "m[baz] = undefined"
+
+   ```
+
+   **`Output:`**
+
+   ```
+   > "m[foo] = 3"
+   > "m[bar] = [object Object]"
+   > "m[baz] = undefined"
+   ```
+
+**`Examples:`**
+
 ```
+const myMap = new Map()
+
+const keyString = 'a string'
+const keyObj    = {}
+const keyFunc   = function() {}
+
+// setting the values
+myMap.set(keyString, "value associated with 'a string'")
+myMap.set(keyObj, 'value associated with keyObj')
+myMap.set(keyFunc, 'value associated with keyFunc')
+
+myMap.size              // 3
+
+// getting the values
+myMap.get(keyString)    // "value associated with 'a string'"
+myMap.get(keyObj)       // "value associated with keyObj"
+myMap.get(keyFunc)      // "value associated with keyFunc"
+
+myMap.get('a string')    // "value associated with 'a string'"
+                         // because keyString === 'a string'
+myMap.get({})            // undefined, because keyObj !== {}
+myMap.get(function() {}) // undefined, because keyFunc !== function () {}
+
+```
+
+## Using NaN as Map keys
+
+NaN can also be used as a key. Even though every NaN is not equal to itself (NaN !== NaN is true)
+
+**`Examples:`**
+
+```
+const myMap = new Map()
+myMap.set(NaN, 'not a number')
+
+myMap.get(NaN)
+// "not a number"
+
+const otherNaN = Number('foo')
+myMap.get(otherNaN)
+// "not a number"
+```
+
+## Relation with Array objects
+
+```
+const kvArray = [['key1', 'value1'], ['key2', 'value2']]
+
+// Use the regular Map constructor to transform a 2D key-value Array into a map
+const myMap = new Map(kvArray)
+
+myMap.get('key1') // returns "value1"
+
+// Use Array.from() to transform a map into a 2D key-value Array
+console.log(Array.from(myMap)) // Will show you exactly the same Array as kvArray
+
+// A succinct way to do the same, using the spread syntax
+console.log([...myMap])
+
+// Or use the keys() or values() iterators, and convert them to an array
+console.log(Array.from(myMap.keys())) // ["key1", "key2"]
+```
+
+Map can be merged, maintain key uniqueness:
+
+```
+const first = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+])
+
+const second = new Map([
+  [1, 'uno'],
+  [2, 'dos']
+])
+
+// Merge two maps. The last repeated key wins.
+// Spread operator essentially converts a Map to an Array
+const merged = new Map([...first, ...second])
+
+console.log(merged.get(1)) // uno
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
+
+```
+
+Maps can be merged with Arrays, too:
+
+```
+const first = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+])
+
+const second = new Map([
+  [1, 'uno'],
+  [2, 'dos']
+])
+
+// Merge maps with an array. The last repeated key wins.
+const merged = new Map([...first, ...second, [1, 'eins']])
+
+console.log(merged.get(1)) // eins
+console.log(merged.get(2)) // dos
+console.log(merged.get(3)) // three
 
 ```
