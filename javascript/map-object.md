@@ -42,11 +42,59 @@ name - pradeep
 
 However, there are important differences
 
-|                 | Map                                                                                         | OBject                                                                                                                                                                                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Accidental Keys | A **Map** does not contain any keys by default. it only contain what explicitly put into it | An **object** has a prototype, so it contains default keys that could collide with your own keys.                                                                                                                                                 |
-| Key Types       | A **Map**'s keys can be any value(including func,objects, or any primitive)                 | The keys of an **Object** must be either [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) |
-| Key Order | The keys in **Map**
+|                           | Map                                                                                         | OBject                                                                                                                                                                                                                                            |
+| ------------------------- | ------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Accidental Keys           | A **Map** does not contain any keys by default. it only contain what explicitly put into it | An **object** has a prototype, so it contains default keys that could collide with your own keys.                                                                                                                                                 |
+| Key Types                 | A **Map**'s keys can be any value(including func,objects, or any primitive)                 | The keys of an **Object** must be either [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) or a [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) |
+| Key Order                 | The keys in **Map** are ordered in a simple straightforward way                             | Although the keys of an ordinary Object are ordered now, this was not always the case, and the order is complex                                                                                                                                   |
+| Size                      | The number of items in a **Map** is easily retrieved from its `size` property               | The number of items in an **Object** must be determined manually.                                                                                                                                                                                 |
+| Iteration                 | A **Map** is an iterable, so it can be directly iterated                                    | Object does not implement an `iteration protocol`, and so objects are not directly iterable using the JavaScript `for...of` statement                                                                                                             |
+| Performance               | Performs better in scenarios involving frequent additions and removals of key-value pairs.  | Not optimized for frequent additions and removals of key-value pairs.                                                                                                                                                                             |
+| Serialization and parsing | No native support                                                                           | Native support for serialization from Object to JSON, using `JSON.stringify()`. <br/> Native support for parsing from JSON to Object, using `JSON.parse()`.                                                                                       |
+
+## Map constructor
+
+`Map():` create a new **Map** object
+
+**`Syntax:`**
+
+```
+new Map()
+new Map(iterable)
+```
+
+Parameter
+**iterable:** An `Array` or other `iterable` object whose elements are key-value pairs.
+
+**`Example:`**
+
+```
+let myMap = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+])
+```
+
+## Static Property
+
+**`get Map[@@species]:`**
+<br/>
+The constructor function that is used to create derived objects.
+<br/>
+The Map[@@species] accessor property returns the Map constructor.
+
+**`Example:`**<br/>
+`Map[Symbol.species]; // function Map()`
+
+**`Derived Object:`**<br/>
+
+```
+class MyMap extends Map {
+  // Overwrite MyMap species to the parent Map constructor
+  static get [Symbol.species]() { return Map; }
+}
+```
 
 ## Instance property
 
@@ -60,3 +108,7 @@ Returns the number of key/value pairs in the Map object.
 3. `Map.prototype.has(key):` Return `true` if key exist in the map.
 4. `Map.prototype.get(key):` Retur the value associated to the **key** or **undefined** if there none.
 5. `Map.prototype.set(key, value):` Sets the value for the key in the Map object. Returns the Map object.
+
+```
+
+```
