@@ -1,0 +1,13 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "iife":"rollup index.js --file bundle.js --format iife",
+    "cjs": "rollup index.js --file bundle-cjs.js --format cjs",
+    "umd":"rollup index.js --file bundle-umd.js --format umd --name myBundle"
+  },
+  "author": "",
+  "license": "ISC"
+}
