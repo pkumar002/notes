@@ -1,0 +1,10 @@
+{
+    "users":[
+        {
+            "id":1,
+            "name":"Pradeep Kumar",
+            "age":34,
+            "email":"arya.creativemind@gmail.com"
+        }
+    ]
+}
