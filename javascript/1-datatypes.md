@@ -76,3 +76,8 @@ if ('x' in window) {
 | Writable                         | no  |
 | Enumerable                       | no  |
 | Configurable                     | no  |
+
+<br/>
+
+## Number types
+ECMAScript has two built-in numeric types: `Number` and `BigInt` — along with the related value `NaN`.
