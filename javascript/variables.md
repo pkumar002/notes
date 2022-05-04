@@ -36,7 +36,7 @@ function foo() {
   }
   bar();
   console.log(x) // output 1
-  console.log(y) // ReferenceError, y is not defined
+  console.log(y) // ReferenceError, y is not declared
 }
 foo();
 ```
