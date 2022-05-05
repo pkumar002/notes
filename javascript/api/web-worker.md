@@ -14,6 +14,33 @@ Data is sent between `workers` and the `main` thread via a system of messages â€
 
 <br/>
 
+## [Worker()](#worker)
+
+The worker() constructor creates a `Worker` object that executes the script at the specified URL. The script must obey the `same-origin-policy`.
+
+**`Syntax:`**
+
+```
+ const ws = new Workder(aURL, options)
+```
+
+#### Parameters
+
+- `aURL:` URL of the script the worker will execute. must obey the same origin-policy.
+- `Options:` <br/>
+
+  - `type:` specifying the type of worker to create, the value can be `classic` or `module`. default value is `classic`
+  - `credentials:` specifying the type of credentials to use for the workder. The value can be `omit`, `same-origin`, or `include`. If not specified, or if type is `classic`, the default used is `omit`
+  - `name:` specifying an identifying name for the `DedicatedWorkerGlobalScope` representing the scope of the worker, which is mainly useful for `debugging` purposes.
+
+#### Exceptions
+
+- `SecurityError:` Thrown if the document is not allowed to start workers. e.g. if the URL has an invalid syntax or if the same-origin policy is violated.
+- `NetworkError:` Thrown if the `MIME` type of the worker script is incorrect. It should always be `text/javascript`.
+- `SyntaxError:` Thrown if aURL cannot be parsed.
+
+<br/>
+
 ### [Types of worker](#types-of-worker)
 
 There are number of different types of workers.
@@ -75,22 +102,11 @@ Following functions are only available to workers.
   })
   ```
 
+**`Terminate a worker:`**
+If you need to immediately terminate a running worker from the main thread.
+
+```
+myWorker.terminate();
+```
+
 <br/>
-
-## [Worker()](#worker)
-
-The worker() constructor creates a `Worker` object that executes the script at the specified URL. The script must obey the `same-origin-policy`.
-
-**`Syntax:`**
-
-```
- const ws = new Workder(aURL, options)
-```
-
-#### Parameters
-
-- `aURL:` URL of the script the worker will execute. must obey the same origin-policy.
-- `Options:` <br/>
-
-  - `type:` specifying the type of worker to create, the value can be `classic` or `module`. default value is `classic`
-  - `credentials:` specifying the type of credentials to use for the workder.
