@@ -1,3 +1,6 @@
+<!-- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#number-type -->
+<!-- https://www.toptal.com/firebase/role-based-firebase-authenticat -->
+
 # Data types
 
 Javascript has total `8` data types, divided into two category.
@@ -80,17 +83,20 @@ if ('x' in window) {
 <br/>
 
 ## Number types
+
 ECMAScript has two built-in numeric types: `Number` and `BigInt` — along with the related value `NaN`.
 
 **`Number:`** <br/>
+
 - The Number type is a `double-precision 64-bit binary format IEEE 754` value.
 - It is capable of storing floating-point numbers between `2^-1074` and `2^1024`.
-- Only safely store integers in the range -(`2^53 − 1`) to `2^53 − 1`. 
+- Only safely store integers in the range -(`2^53 − 1`) to `2^53 − 1`.
 - Value outside of the range `Number.MIN_VALUE` and `Number.MAX_VALUE` autometically converted to eighter `+Infinity` or `-Infinity`.
 
 The number type has only one integer with multiple representations: `0` is represented as both `-0` and `+0` (where `0` is an alias for `+0`). In practice, there is almost no difference between the different representations; for example, `+0 === -0` is true. However, you are able to notice this when you divide by zero:
 
 **`Example:`**
+
 ```
 > 42 / +0
 Infinity
