@@ -1,18 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Javascript</title>
-  <script src="./index.js" defer></script>
-</head>
+<html>
 
 <body>
-  <div id="root">
-    <p> Hello world</p>
-  </div>
+
+  <h1>The Storage Event</h1>
+
+  <p>The Storage Event is triggered when there is a change in the window's storage area.</p>
+
+  <p><strong>Note:</strong> The storage event is only triggered when a window
+    <strong>other than itself</strong> makes the changes.
+  </p>
+
+  <p>Therefore, in this example, a new window is created, and the changes is done in the new window.</p>
+
+  <h1>The storageArea Property</h1>
+
+  <p>The storageArea property belongs to the Storage Event object, and returns the Storage object of the item that was
+    changed.</p>
+
+  <button onclick="changeValue()">Change a Storage Item</button>
+
+  <p id="demo"></p>
+
+  <script>
+    window.addEventListener("storage", myFunction);
+
+              function myFunction(event) {
+                x = event.storageArea;
+                console.log(event)
+                document.getElementById("demo").innerHTML = JSON.stringify(x, null, 4);
+              }
+
+              function changeValue() {
+                var x = window.open("", "myWindow", "width=200,height=100");
+                x.localStorage.setItem("mytime", Date.now());
+                x.close();
+              }
+            </script>
 </body>
 
 </html>
