@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html>
+  <body>
+    <h1>The Storage Event</h1>
 
-<body>
+    <p>
+      The Storage Event is triggered when there is a change in the window's
+      storage area.
+    </p>
 
-  <h1>The Storage Event</h1>
+    <p>
+      <strong>Note:</strong> The storage event is only triggered when a window
+      <strong>other than itself</strong> makes the changes.
+    </p>
 
-  <p>The Storage Event is triggered when there is a change in the window's storage area.</p>
+    <p>
+      Therefore, in this example, a new window is created, and the changes is
+      done in the new window.
+    </p>
 
-  <p><strong>Note:</strong> The storage event is only triggered when a window
-    <strong>other than itself</strong> makes the changes.
-  </p>
+    <h1>The storageArea Property</h1>
 
-  <p>Therefore, in this example, a new window is created, and the changes is done in the new window.</p>
+    <p>
+      The storageArea property belongs to the Storage Event object, and returns
+      the Storage object of the item that was changed.
+    </p>
 
-  <h1>The storageArea Property</h1>
+    <button onclick="changeValue()">Change a Storage Item</button>
 
-  <p>The storageArea property belongs to the Storage Event object, and returns the Storage object of the item that was
-    changed.</p>
+    <p id="demo"></p>
 
-  <button onclick="changeValue()">Change a Storage Item</button>
+    <script>
+      window.addEventListener("storage", myFunction);
 
-  <p id="demo"></p>
+        function myFunction(event) {
+          x = event.storageArea;
+        console.log(event);
+        document.getElementById("demo").innerHTML = JSON.stringify(x, null, 4);
+      }
 
-  <script>
-    window.addEventListener("storage", myFunction);
-
-              function myFunction(event) {
-                x = event.storageArea;
-                console.log(event)
-                document.getElementById("demo").innerHTML = JSON.stringify(x, null, 4);
-              }
-
-              function changeValue() {
-                var x = window.open("", "myWindow", "width=200,height=100");
-                x.localStorage.setItem("mytime", Date.now());
-                x.close();
-              }
-            </script>
-</body>
-
+        function changeValue() {
+          var x = window.open("", "myWindow", "width=200,height=100");
+          x.localStorage.setItem("mytime", Date.now());
+          x.close();
+        }
+      </script>
+    </body>
 </html>
