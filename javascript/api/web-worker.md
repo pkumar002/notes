@@ -102,6 +102,76 @@ Following functions are only available to workers.
   })
   ```
 
+<br/>
+
+### [Dedicated workers](#dedicated-workers)
+
+A dedicated worker only accessible by the script that called it.
+
+**`Worker feature detection`**
+
+**`Example:`**
+
+```
+if(window.Worker){
+  // create worker here
+}
+```
+
+Spawning a dedicated worker
+
+**`Example:`**
+
+```
+var myWorker = new Worker('worker.js');
+```
+
+Sending message to and from a dedicated worker
+
+**`Example:`**
+
+```
+const result = document.querySelector("#result")
+const input = document.querySelector("#input"); // select element
+
+input.onchange=function(e){
+  myWorker.postMessage(e.target.value) // send message to the worker thread
+}
+```
+
+In the worker, we can respond when the message is received.
+
+**`Example:`**
+
+```
+onmessage = function(ev) {
+  console.log('Message received from main script');
+  var workerResult = 'Result: ' + (ev.data);
+  console.log('Posting message back to main script');
+  postMessage(workerResult);
+}
+
+or
+
+self.addEventListener("message",(ev)=>{
+  console.log('Message received from main script');
+  var workerResult = 'Result: ' + (ev.data);
+  console.log('Posting message back to main script');
+  postMessage(workerResult);
+})
+```
+
+Receive the response in main thread
+
+**`Example:`**
+
+```
+myWorker.onmessage = function(e) {
+  result.textContent = e.data;
+  console.log('Message received from worker');
+}
+```
+
 **`Terminate a worker:`**
 If you need to immediately terminate a running worker from the main thread.
 
@@ -109,4 +179,77 @@ If you need to immediately terminate a running worker from the main thread.
 myWorker.terminate();
 ```
 
+### [Importing scripts and libraries](#importing-scripts-and-libraries)
+
+Worker threads have access to a global function, `importScripts()`, which lets them import scripts. It accepts zero or more URIs as parameters to resources to import;
+
+```
+importScripts();                         /* imports nothing */
+importScripts('foo.js');                 /* imports just "foo.js" */
+importScripts('foo.js', 'bar.js');       /* imports two scripts */
+importScripts('//example.com/hello.js'); /* You can import scripts from other
+```
+
+If the script can't be loaded, `NETWORK_ERROR` is thrown, and subsequent code will not be executed.
+
 <br/>
+
+### [Shared workers](#shared-workers)
+
+A shared worker is accessible by `multiple` scripts — even if they are being accessed by different windows, iframes or even workers.
+
+`Note:` If `SharedWorker` can be accessed from several browsing contexts, all those browsing contexts must share the exact `same origin `(same protocol, host, and port).
+
+#### Spawning a shared worker:
+
+**`Syntax:`**
+
+```
+ const ws = new SharedWorker('worker.js')
+```
+
+`Note:` One big difference is that with a shared worker you have to communicate via a `port` object. — an explicit port is opened that the scripts can use to communicate with the worker
+
+The port connection needs to be started either implicitly by use of the `onmessage` event handler or explicitly with the `start()`
+
+`Port` object has two key.
+
+1. onmessage,
+2. onmessageerror
+
+<br/>
+
+#### Sending messge to and from a shared worker:
+
+**`Example:`**
+
+```
+ ws.port.postMessage("Hello World, I am a shared worker");
+```
+
+#### Worker receive the message
+
+**`Example:`**
+
+```
+onconnect = function (e) {
+  var port = e.ports[0];
+  port.onmessage = function (e) {
+    console.log("eeee", e.ports)
+    var workerResult = 'Result: ' + (e.data);
+    port.postMessage(workerResult);
+  }
+}
+```
+
+We use the `ports` attribute of this event object to grab the port and store it in a variable.
+
+<br/>
+
+#### Content security policy:
+
+Worker are considered to have their own execution context distinct from the document that created.
+
+```
+Content-Security-Policy: script-src 'self'
+```

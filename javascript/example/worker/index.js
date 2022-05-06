@@ -15,3 +15,4 @@ if (window.Worker) {
         console.log('worker response', ev.data)
     }
 }
+

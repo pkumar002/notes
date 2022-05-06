@@ -1,3 +1,4 @@
-console.log(Object.getPrototypeOf(localStorage))
-
-console.dir(localStorage)
+function abc() {
+  return 9 + 9
+}
+console.log('hello world')

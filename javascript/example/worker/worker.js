@@ -9,6 +9,7 @@
 //     console.log('data', data)
 // })
 
+
 self.onmessage = function (e) {
     const data = e.data;
     switch (data) {
