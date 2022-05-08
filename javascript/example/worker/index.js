@@ -1,18 +1,72 @@
-const first = document.querySelector("#first");
-const second = document.querySelector("#second");
-const arr = [2, 4, 6]
-const root = document.querySelector("#root")
-if (window.Worker) {
-    const ws = new Worker('./worker.js');
-    ws.postMessage("data");
-    ws.onmessage = function (ev) {
-        const data = ev.data;
-        for (let i = 0; i < data.length; i++) {
-            const el = document.createElement("span");
-            el.innerHTML = data[i].username + '<br/>';
-            root.append(el)
+/*
+     QueryableWorker instances methods:
+       * sendQuery(queryable function name, argument to pass 1, argument to pass 2, etc. etc): calls a Worker's queryable function
+       * postMessage(string or JSON Data): see Worker.prototype.postMessage()
+       * terminate(): terminates the Worker
+       * addListener(name, function): adds a listener
+       * removeListener(name): removes a listener
+     QueryableWorker instances properties:
+       * defaultListener: the default listener executed only when the Worker calls the postMessage() function directly
+    */
+function QueryableWorker(url, defaultListener, onError) {
+    var instance = this,
+        worker = new Worker(url),
+        listeners = {};
+
+    this.defaultListener = defaultListener || function () { };
+
+    if (onError) { worker.onerror = onError; }
+
+    this.postMessage = function (message) {
+        worker.postMessage(message);
+    }
+
+    this.terminate = function () {
+        worker.terminate();
+    }
+
+    this.addListener = function (name, listener) {
+        listeners[name] = listener;
+    }
+
+    this.removeListener = function (name) {
+        delete listeners[name];
+    }
+
+    /*
+      This functions takes at least one argument, the method name we want to query.
+      Then we can pass in the arguments that the method needs.
+    */
+    this.sendQuery = function () {
+        if (arguments.length < 1) {
+            throw new TypeError('QueryableWorker.sendQuery takes at least one argument');
+            return;
         }
-        console.log('worker response', ev.data)
+        worker.postMessage({
+            'queryMethod': arguments[0],
+            'queryMethodArguments': Array.prototype.slice.call(arguments, 1)
+        });
+    }
+
+    worker.onmessage = function (event) {
+        if (event.data instanceof Object &&
+            event.data.hasOwnProperty('queryMethodListener') &&
+            event.data.hasOwnProperty('queryMethodArguments')) {
+            listeners[event.data.queryMethodListener].apply(instance, event.data.queryMethodArguments);
+        } else {
+            this.defaultListener.call(instance, event.data);
+        }
     }
 }
 
+// your custom "queryable" worker
+var myTask = new QueryableWorker('worker.js');
+
+// your custom "listeners"
+myTask.addListener('printStuff', function (result) {
+    document.getElementById('firstLink').parentNode.appendChild(document.createTextNode('The difference is ' + result + '!'));
+});
+
+myTask.addListener('doAlert', function (time, unit) {
+    alert('Worker waited for ' + time + ' ' + unit + ' :-)');
+});

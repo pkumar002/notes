@@ -1,29 +1,30 @@
-// self.addEventListener('message', (ev) => {
-//     console.log('worker event', ev)
-//     const data = ev.data
-//     self.postMessage(data.map(x => x ** x))
-// })
-
-// self.addEventListener("keydown", ev => {
-//     const data = ev.data;
-//     console.log('data', data)
-// })
-
-
-self.onmessage = function (e) {
-    const data = e.data;
-    switch (data) {
-        case 'data':
-            fetch('https://jsonplaceholder.typicode.com/users')
-                .then(res => res.json())
-                .then(result => self.postMessage(result))
-                .catch(error => self.postMessage(error.message))
-            break;
-        case 'quare':
-            self.postMessage(e.data.map(x => x * x))
-            break;
-        default:
-            self.postMessage('No input')
-            break;
+var queryableFunctions = {
+    // example #1: get the difference between two numbers:
+    getDifference: function (nMinuend, nSubtrahend) {
+        reply('printStuff', nMinuend - nSubtrahend);
+    },
+    // example #2: wait three seconds
+    waitSomeTime: function () {
+        setTimeout(function () { reply('doAlert', 3, 'seconds'); }, 3000);
     }
+};
+
+// system functions
+
+function defaultReply(message) {
+    // your default PUBLIC function executed only when main page calls the queryableWorker.postMessage() method directly
+    // do something
 }
+
+function reply() {
+    if (arguments.length < 1) { throw new TypeError('reply - not enough arguments'); return; }
+    postMessage({ 'queryMethodListener': arguments[0], 'queryMethodArguments': Array.prototype.slice.call(arguments, 1) });
+}
+
+onmessage = function (oEvent) {
+    if (oEvent.data instanceof Object && oEvent.data.hasOwnProperty('queryMethod') && oEvent.data.hasOwnProperty('queryMethodArguments')) {
+        queryableFunctions[oEvent.data.queryMethod].apply(self, oEvent.data.queryMethodArguments);
+    } else {
+        defaultReply(oEvent.data);
+    }
+};

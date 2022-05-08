@@ -10,9 +10,13 @@
 
 <body>
     <div id="root">
-        <input type="text" id="first" />
-        <input type="text" id="second" />
-        <div id="result"></div>
+        <ul>
+            <li><a id="firstLink" href="javascript:myTask.sendQuery('getDifference', 5, 3);">What is the difference
+                    between 5
+                    and 3?</a></li>
+            <li><a href="javascript:myTask.sendQuery('waitSomeTime');">Wait 3 seconds</a></li>
+            <li><a href="javascript:myTask.terminate();">terminate() the Worker</a></li>
+        </ul>
     </div>
     <!-- script -->
     <script src="./index.js"></script>
