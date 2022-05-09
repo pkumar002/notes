@@ -1,14 +1,6 @@
-# Big O Notation
+# [Time Complexity](#time-complexity)
 
-Big O notation is one of the most fundamental tools for computer scientists to analyze the cost of an `algorithm`.
-
-Big O notation describes the `complexity` of your code using algebraic terms.
-
-**`What does better mean?`**
-
-- Faster?.
-- Less memory-intensive?.
-- More readable?.
+`Time` complexity represents the number of `times` a statement is executed.
 
 **`Example:`**<br/>
 Get the sum of `n` numbers.
@@ -84,15 +76,6 @@ It has 3 operation
 3. Division.
 
 Complexity is `O(1)`, always 3 operation.
-
-<br/>
-
-**`Notations:`**
-
-1. `f(n)` could be linear (f(n)=n).
-2. `f(n)` could be quadratic (f(n)=n2).
-3. `f(n)` could be constant (f(n)=1).
-4. `f(n)` could be someting entirely different.
 
 <br/>
 
