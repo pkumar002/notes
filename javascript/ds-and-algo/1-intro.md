@@ -4,6 +4,12 @@ Big O notation is one of the most fundamental tools for computer scientists to a
 
 Big O notation describes the `complexity` of your code using algebraic terms.
 
+**`What does better mean?`**
+
+- Faster?.
+- Less memory-intensive?.
+- More readable?.
+
 **`Example:`**<br/>
 Get the sum of `n` numbers.
 
@@ -68,7 +74,7 @@ It has `5n+2` operation.
 - i++ => n additions and n assignments.
 - i<=n => n comparisions
 
-the complexity is `O(5n)`, 
+the complexity is `O(5n)`,
 
 `**Solution 2:`\*\*
 It has 3 operation
@@ -90,12 +96,16 @@ Complexity is `O(1)`, always 3 operation.
 
 <br/>
 
-**`What does better mean?`**
-
-- Faster?.
-- Less memory-intensive?.
-- More readable?.
+**`Example 2:`**
 
 ```
-
+ function printAllPairs(n){
+   for(let i=0; i<n; i++){
+     for(let j=0; j<n; j++){
+       console.log(`i and j = ${i} - ${j}`)
+     }
+   }
+ }
 ```
+
+Complexity is `O(n2)`
