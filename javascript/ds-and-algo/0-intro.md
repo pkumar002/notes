@@ -27,11 +27,11 @@ Big O notation describes the `complexity` of your code using algebraic terms.
 - Less memory-intensive?.
 - More readable?.
 
-
-
 ### Big O shorthands
 
 - Arithmetic operations are constant.
 - Variable assignment is constant.
 - Accessing element in an array (by index) or Object (by key) is constant.
 - In a loop, the complexity is the length of the loop times the complexity of whatever happens inside of the loop.
+
+![notations graph](./notations-graph.png)
