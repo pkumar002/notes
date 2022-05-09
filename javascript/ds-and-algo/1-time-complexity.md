@@ -55,7 +55,7 @@ The problem with time.
 `If not using time then what?`
 
 - Rather thant counting `seconds`, which are so variable....
-- Let's cont the `number of operations` the computer has to perform!.
+- Let's count the `number of operations` the computer has to perform!.
 
 `**Solution 1:`\*\*
 It has `5n+2` operation.
@@ -66,12 +66,12 @@ It has `5n+2` operation.
 - i++ => n additions and n assignments.
 - i<=n => n comparisions
 
-the complexity is `O(5n)`,
+the complexity is `O(n)`,
 
 `**Solution 2:`\*\*
 It has 3 operation
 
-1. Multilication.
+1. Multiplication.
 2. Addition.
 3. Division.
 
