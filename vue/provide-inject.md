@@ -100,3 +100,136 @@ app.provide(/* key */ 'message', /* value */ 'hello!')
 ```
 
 App-level provides are available to `all` `components` rendered in the app. This is especially useful when writing `plugins`.
+
+<br>
+
+**`Inject:`**<br>
+To inject data provided by an ancestor component, use the `inject()` function:
+
+`Example:`
+
+```
+<script setup>
+import { inject } from 'vue'
+
+const message = inject('message')
+</script>
+
+or
+
+export default{
+  inject:["message"],
+
+  created(){
+    console.log(this.message)
+  }
+}
+
+or
+
+import { inject } from 'vue'
+
+export default {
+  setup() {
+    const message = inject('message')
+    return { message }
+  }
+}
+```
+
+<br>
+
+**`Injection Default Values:`**<br>
+By `default`, `inject` assumes that the injected `key` is provided somewhere in the `parent` chain. In the case where the `key` is not provided, there will be a runtime `warning`.
+
+`Solution:` Provide default value agains the key.
+
+`Example:`
+
+```
+const value = inject('message', 'default value')
+```
+
+if no data matching `"message"` was provided.
+
+<br>
+<br>
+
+**`Working with reactivity:`** <br>
+When using reactive `provide / inject` values, **it is recommended to keep any mutations to reactive state inside of the provider whenever possible**.
+
+There may be times when we need to update the data from an injector component.
+
+`Example:`
+
+Inside provider component:
+
+```
+<!-- inside provider component -->
+<script setup>
+  import { provide, ref } from 'vue'
+
+  const location = ref('North Pole')
+
+  function updateLocation() {
+    location.value = 'South Pole'
+  }
+
+  provide('location', {
+    location,
+    updateLocation
+  })
+</script>
+```
+
+Inside injector component:
+
+```
+<!-- in injector component -->
+<script setup>
+  import { inject } from 'vue'
+
+  const { location, updateLocation } = inject('location')
+</script>
+
+<template>
+  <button @click="updateLocation">{{ location }}</button>
+</template>
+```
+
+`Finally`, you can wrap the provided value with `readonly()` if you want to ensure that the data passed through provide cannot be mutated by the injected component.
+
+`Example:`
+
+```
+<script setup>
+  import { ref, provide, readonly } from 'vue'
+
+  const count = ref(0)
+  provide('read-only-count', readonly(count))
+</script>
+```
+
+Inside option api provide update state change to reflect on injector component
+
+`Example:`
+
+```
+export default {
+  components: { HomeTitle },
+  name: "home-vue",
+  data() {
+    return {
+      count: 0,
+    };
+  },
+
+  provide() {
+    return {
+      name: computed(() => this.count),
+    };
+  }
+}
+```
+
+use `computed` to wrap data key to `reflect` changes on the `injector` component.
