@@ -1,0 +1,26 @@
+{
+  "name": "notes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "docs:server": "vuepress server docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkumar002/notes.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pkumar002/notes/issues"
+  },
+  "homepage": "https://github.com/pkumar002/notes#readme",
+  "devDependencies": {
+    "@vuepress/bundler-vite": "^2.0.0-beta.43",
+    "vuepress": "^2.0.0-beta.43"
+  }
+}
